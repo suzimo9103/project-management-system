@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>枫梵项目管理系统</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .projects-page {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .create-project-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .create-project-btn:hover {
+            background: #45a049;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .project-card:hover {
+            background-color: #fafafa;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .progress-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .cost {
+            color: #e65100;
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .card-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .card-actions button:first-child {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .card-status {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.进行中 {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-badge.已完成 {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.已暂停 {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .progress-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .import-export {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn, .import-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover, .import-btn:hover {
+            background: #1557b0;
+            transform: translateY(-1px);
+        }
+
+        .export-btn {
+            background: #4CAF50;
+        }
+
+        .export-btn:hover {
+            background: #45a049;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* 添加通知动画 */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            animation: fadeInOut 2.5s ease-in-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="projects-page">
+        <div class="page-header">
+            <div class="header-left">
+                <h1>枫梵项目管理系统</h1>
+                <div class="import-export">
+                    <button class="export-btn" onclick="exportProjects()">导出所有项目</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importProjects(event)">
+                    <button class="import-btn" onclick="document.getElementById('importFile').click()">导入项目数据</button>
+                </div>
+            </div>
+            <button class="create-project-btn" onclick="createNewProject()">创建新项目</button>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="搜索项目..." onkeyup="searchProjects(this.value)">
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+            <!-- 项目卡片将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+</html> 
