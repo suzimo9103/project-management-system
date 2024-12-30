@@ -574,6 +574,26 @@
             background-color: #fafafa;
             border-left: 3px solid var(--primary-color);
         }
+
+        /* 添加通知动画 */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            animation: fadeInOut 2.5s ease-in-out forwards;
+        }
     </style>
     <script src="https://unpkg.com/exceljs/dist/exceljs.min.js"></script>
 </head>
@@ -581,11 +601,11 @@
     <!-- 头部：导入导出按钮 -->
     <div class="header">
         <div class="header-left">
-            <button class="back-btn" onclick="window.location.href='index.html'">返回首页</button>
+            <button class="back-btn" onclick="window.location.href=`${BASE_URL}/index.html`">返回首页</button>
             <h1>项目管理系统</h1>
         </div>
         <div class="import-export">
-            <input type="file" id="importFile" accept=".json" style="display: none;">
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importProjects(event)">
             <button class="export-btn" onclick="exportToJSON()">导出项目数据</button>
             <button class="import-btn" onclick="document.getElementById('importFile').click()">导入项目数据</button>
             <button class="export-excel-btn" onclick="exportExcel()">导出Excel表格</button>
@@ -917,43 +937,49 @@
                 <label>总体进度</label>
                 <div class="progress-bar">
                     <div id="totalProgress" class="progress-fill"></div>
-                    <span id="totalProgressText">0%</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/script.js"></script>
+                    <span id="totalProgressText">0%</span> 
+                </div> 
+            </div> 
+        </div> 
+    </div> 
 
-    <div class="loading">
-        <div class="spinner"></div>
-    </div>
+    <script src="js/config.js"></script> 
+    <script src="js/script.js"></script> 
 
-    <!-- 自动调整textarea高度的JavaScript -->
-    <script>
-    document.addEventListener('input', function(e) {
+    <div class="loading"> 
+        <div class="spinner"></div> 
+    </div> 
+
+    <!-- 自动调整textarea高度的JavaScript --> 
+    <script> 
+    document.addEventListener('input', function(e) { 
         if (e.target.tagName.toLowerCase() === 'textarea') {
-            // 自动调整高度
-            e.target.style.height = '0';
+
+            // 自动调整高度 
+            e.target.style.height = '0'; 
             e.target.style.height = (e.target.scrollHeight + 2) + 'px';  // 添加2px防止出现滚动条
+
             
-            // 调整父级td的高度
-            const td = e.target.closest('td');
-            if (td) {
-                td.style.height = 'auto';  // 让td自动适应内容高度
+            // 调整父级td的高度 
+            const td = e.target.closest('td'); 
+            if (td) { 
+                td.style.height = 'auto';  // 让td自动适应内容高度 
             }
         }
     });
 
-    // 页面加载时初始化所有textarea的高度
+    // 页面加载时初始化所有textarea的高度 
     document.addEventListener('DOMContentLoaded', function() {
+
         document.querySelectorAll('textarea').forEach(textarea => {
-            textarea.style.height = '0';
+
+            textarea.style.height = '0'; 
             textarea.style.height = (textarea.scrollHeight + 2) + 'px';
-            const td = textarea.closest('td');
-            if (td) {
-                td.style.height = 'auto';
+
+            const td = textarea.closest('td'); 
+            if (td) { 
+                td.style.height = 'auto'; 
             }
         });
     });
