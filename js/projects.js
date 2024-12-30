@@ -204,7 +204,7 @@ function importProjects(event) {
             const importedData = JSON.parse(e.target.result);
             
             // 验证数据结构
-            if (typeof importedData !== 'object') {
+            if (!importedData || typeof importedData !== 'object') {
                 throw new Error('数据格式不正确');
             }
 
@@ -221,7 +221,7 @@ function importProjects(event) {
             // 显示成功提示
             showNotification('项目数据导入成功', 'success');
         } catch (error) {
-            console.error('导入失败:', error);
+            console.error('导入失败:', error.message);
             showNotification('导入失败，文件格式不正确', 'error');
         }
     };
