@@ -104,12 +104,12 @@ function createNewProject() {
     };
     
     localStorage.setItem('projects', JSON.stringify(projects));
-    openProject(id);
+    window.location.href = `${BASE_URL}/project.html?id=${id}`;
 }
 
 // 打开项目详情页
 function openProject(id) {
-    window.location.href = `project.html?id=${id}`;
+    window.location.href = `${BASE_URL}/project.html?id=${id}`;
 }
 
 // 搜索项目
