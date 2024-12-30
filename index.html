@@ -206,32 +206,63 @@
             outline: none;
             border-color: var(--primary-color);
         }
-    </style>
-</head>
-<body>
-    <div class="projects-page">
-        <div class="page-header">
-            <div class="header-left">
-                <h1>枫梵项目管理系统</h1>
-                <div class="import-export">
+
+        /* 添加通知动画 */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); } 
+            100% { opacity: 0; transform: translateY(-20px); }
+
+        }
+
+        .notification { 
+            position: fixed; 
+            bottom: 20px;  
+            right: 20px;  
+            padding: 12px 24px;  
+            border-radius: 4px;  
+            color: white;  
+            font-weight: 500;  
+            z-index: 1000;  
+            animation: fadeInOut 2.5s ease-in-out forwards;  
+        }
+    </style>  
+</head>  
+<body>  
+    <div class="projects-page">  
+        <div class="page-header">  
+            <div class="header-left">  
+                <h1>枫梵项目管理系统</h1>  
+                <div class="import-export">  
                     <button class="export-btn" onclick="exportProjects()">导出所有项目</button>
+
+
                     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importProjects(event)">
+
+
                     <button class="import-btn" onclick="document.getElementById('importFile').click()">导入项目数据</button>
-                </div>
-            </div>
+
+
+                </div>  
+            </div>  
             <button class="create-project-btn" onclick="createNewProject()">创建新项目</button>
-        </div>
 
-        <div class="search-bar">
+
+        </div>  
+
+        <div class="search-bar">  
             <input type="text" placeholder="搜索项目..." onkeyup="searchProjects(this.value)">
-        </div>
 
-        <div class="projects-grid" id="projectsGrid">
-            <!-- 项目卡片将通过JavaScript动态生成 -->
-        </div>
-    </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/projects.js"></script>
+        </div>  
+
+        <div class="projects-grid" id="projectsGrid">  
+            <!-- 项目卡片将通过JavaScript动态生成 -->  
+        </div>  
+    </div>  
+
+    <script src="js/config.js"></script> 
+    <script src="js/projects.js"></script> 
 </body>
 </html> 
